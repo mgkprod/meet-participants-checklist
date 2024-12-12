@@ -37,6 +37,12 @@ rootObserver.observe(root, observerConfig);
 
 function addCheckBoxes() {
     const participantsNL = document.querySelectorAll('[role="listitem"]');
+
+    if (!participantsNL.length) {
+        setTimeout(addCheckBoxes, 1000);
+        return;
+    }
+
     for (const participantN of participantsNL) {
         const checkbox = Object.assign(document.createElement('input'), {
             type: "checkbox",
@@ -53,7 +59,7 @@ function addCheckBoxes() {
         if (!participantN.children[0].classList.contains('checklist-wrapper')) {
             checkNameWrap.appendChild(participantN.children[0]);
             participantN.prepend(checkNameWrap);
-            const participantName = participantN.children[0].children[1].children[1].children[0].children[0].innerText;    //  Hacky method becuase the classes are dynamic but the structure is same
+            const participantName = participantN.getAttribute('aria-label');
             checkbox.setAttribute('data-participant', participantName);
             const participantList = JSON.parse(localStorage.getItem('meet-participants'));
             if (participantList && participantList[participantName]) {
@@ -68,6 +74,6 @@ function handleChecklist() {
     localStorage.setItem('meet-participants', JSON.stringify(participantData));
 }
 
-window.onunload = () => {
+window.addEventListener('beforeunload', () => {
     localStorage.removeItem('meet-participants');
-}
+});
