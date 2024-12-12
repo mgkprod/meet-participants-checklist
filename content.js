@@ -68,6 +68,6 @@ function handleChecklist() {
     localStorage.setItem('meet-participants', JSON.stringify(participantData));
 }
 
-window.onunload = () => {
+window.addEventListener('beforeunload', () => {
     localStorage.removeItem('meet-participants');
-}
+});
