@@ -24,9 +24,6 @@
     ],
     "web_accessible_resources": [
         {
-            "resources": [
-                "images/selected.svg"
-            ],
             "matches": [
                 "https://meet.google.com/*"
             ]
