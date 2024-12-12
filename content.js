@@ -37,6 +37,12 @@ rootObserver.observe(root, observerConfig);
 
 function addCheckBoxes() {
     const participantsNL = document.querySelectorAll('[role="listitem"]');
+
+    if (!participantsNL.length) {
+        setTimeout(addCheckBoxes, 1000);
+        return;
+    }
+
     for (const participantN of participantsNL) {
         const checkbox = Object.assign(document.createElement('input'), {
             type: "checkbox",
