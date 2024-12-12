@@ -2,8 +2,6 @@ const root = document.querySelector('.crqnQb');
 const observerConfig = { attributes: false, childList: true, subtree: true };
 const participantData = {};
 
-let isParticipantListObserverSet = false;
-
 const participantObserver = new MutationObserver(mutations => {
     for (const mutation of mutations) {
         const isParticipantRemoved = mutation.removedNodes.length && mutation.removedNodes[0].nodeName == 'DIV';
@@ -21,14 +19,10 @@ const rootObserver = new MutationObserver(mutations => {
         if (mutation.type === 'childList') {
             const sidebar = document.querySelector('.R3Gmyc:not(.qdulke)')
             if (sidebar) {
-                if (!isParticipantListObserverSet) {
-                    const participantContainer = document.querySelector('[aria-label="Participants"]');
-                    participantObserver?.observe(participantContainer, { childList: true, subtree: true });
-                    isParticipantListObserverSet = true;
-                    addCheckBoxes();
-                } else if (mutation.removedNodes.length && mutation.removedNodes[0].classList != undefined && mutation.removedNodes[0].classList.contains('checklist')) {
-                    addCheckBoxes();
-                }
+                const participantContainer = document.querySelector('[aria-label="Participants"]');
+                participantObserver?.disconnect(); // Disconnect the observer if it was already observing
+                participantObserver?.observe(participantContainer, { childList: true, subtree: true });
+                addCheckBoxes();
             }
         }
     }
